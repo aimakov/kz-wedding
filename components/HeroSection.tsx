@@ -23,7 +23,7 @@ const HeroSection = (props: Props) => {
         <Text textAlign={"right"} width={"full"} pr={2}>
           Хэуон
         </Text>
-        <Image src={images.path} position={"absolute"} width={"80%"} objectFit={"cover"} top={[-7, "-45px"]} left={[10, "42px"]} />
+        <Image src={images.path} position={"absolute"} width={"80%"} objectFit={"cover"} top={[-7, "-45px"]} left={[10, "43px"]} />
       </Flex>
 
       <Flex alignItems={"center"} gap={["20px", "40px"]} fontSize={["1.2rem", "1.6rem"]}>
