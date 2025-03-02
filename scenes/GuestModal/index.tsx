@@ -71,9 +71,10 @@ function GuestModal() {
 
       if (coming && router.query.tme) setStage(1);
       else handleClose();
-    } catch (error: any) {
+    } catch (error) {
+      const message = (error as Error).message;
       errorToast({
-        title: error.message,
+        title: message,
         description: "",
       });
     }

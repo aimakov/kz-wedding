@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 
 import { brandColors } from "@/styles/theme";

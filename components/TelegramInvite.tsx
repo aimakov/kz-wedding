@@ -5,11 +5,9 @@ import { images } from "@/utils/images";
 import { brandColors } from "@/styles/theme";
 import { useToast } from "@/hooks";
 
-type Props = {};
-
-const TelegramInvite = (props: Props) => {
+const TelegramInvite = () => {
   const router = useRouter();
-  const { successToast, errorToast } = useToast();
+  const { errorToast } = useToast();
 
   return (
     <Flex mt="40px" flexDirection={"column"} alignItems={"center"} gap={4}>
@@ -29,10 +27,12 @@ const TelegramInvite = (props: Props) => {
           try {
             if (!router.query.tme) throw new Error("Ссылка на телеграм канал отсутствует.");
             router.push(`https://t.me/+${router.query.tme}`);
-          } catch (error: any) {
+          } catch (error) {
+            const message = (error as Error).message;
+
             errorToast({
               title: "Произошла ошибка!",
-              description: error.message,
+              description: message,
             });
           }
         }}

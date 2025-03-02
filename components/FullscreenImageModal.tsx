@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Image, Flex } from "@chakra-ui/react";
-import { brandColors } from "@/styles/theme";
 
 type Props = {
   isOpen: boolean;
@@ -33,6 +32,7 @@ const FullscreenImageModal = ({ isOpen = true, onClose = () => null, image }: Pr
           >
             {image && (
               <Image
+                alt={image}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
