@@ -4,6 +4,7 @@ export const images = {
   heroSection: "/images/7.jpg",
   path: "/images/path.png",
   telegram: "/images/telegram.png",
+  telegramQR: "/images/telegram-qr.jpg",
 
   image_1: "/images/image_1.jpg",
   image_2: "/images/image_2.jpg",

@@ -8,5 +8,6 @@ import GuestModal from "./GuestModal";
 import Masonry from "./Masonry";
 import Hosts from "./Hosts";
 import FullscreenImageModal from "./FullscreenImageModal";
+import TelegramInvite from "./TelegramInvite";
 
-export { Layout, Aurora, CountdownTimer, HeroSection, GoogleMap, RSVP, GuestModal, Masonry, Hosts, FullscreenImageModal };
+export { Layout, Aurora, CountdownTimer, HeroSection, GoogleMap, RSVP, GuestModal, Masonry, Hosts, FullscreenImageModal, TelegramInvite };

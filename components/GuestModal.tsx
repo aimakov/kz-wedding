@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,14 +13,17 @@ import {
   Flex,
   Text,
   useToast,
+  Checkbox,
 } from "@chakra-ui/react";
 import { FormProvider, Controller, useForm, SubmitHandler } from "react-hook-form";
 import { PiHeartLight, PiHeartBreakFill, PiHeartFill } from "react-icons/pi";
+import { useRouter } from "next/router";
 
 import { supabase } from "@/services/supabase";
 import { brandColors } from "@/styles/theme";
 import { Poiret } from "@/utils/fonts";
 import TextInput from "./Form/TextInput";
+import TelegramInvite from "./TelegramInvite";
 
 type Inputs = {
   name: string;
@@ -34,10 +37,12 @@ type Inputs = {
 
 function GuestModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [stage, setStage] = useState(0);
   const [coming, setComing] = useState<boolean | null>(null);
-  // const [notComing, setNotComing] = useState(false);
   const [countryCode, setCountryCode] = useState("+7");
   const [additionalGuests, setAdditionalGuests] = useState(0);
+
+  const router = useRouter();
 
   const methods = useForm({
     defaultValues: {
@@ -52,6 +57,10 @@ function GuestModal() {
     },
     mode: "onChange",
   });
+
+  useEffect(() => {
+    console.log(methods.formState);
+  }, [methods.formState]);
 
   const toast = useToast();
 
@@ -74,15 +83,18 @@ function GuestModal() {
         status: "success",
         duration: 3000,
         isClosable: true,
+        position: "top",
       });
 
-      handleClose();
+      if (coming && router.query.tme) setStage(1);
+      else handleClose();
     } catch (error: any) {
       toast({
         title: error.message,
         status: "error",
         duration: 3000,
         isClosable: true,
+        position: "top",
       });
     }
   };
@@ -91,6 +103,7 @@ function GuestModal() {
     setComing(null);
     methods.reset();
     onClose();
+    setStage(0);
   };
 
   return (
@@ -118,12 +131,26 @@ function GuestModal() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent background={brandColors.lightPink} color={brandColors.black} mx={2} className={Poiret.className}>
-          {/* <ModalHeader>Modal Title</ModalHeader> */}
-          {/* <ModalCloseButton /> */}
-          <ModalBody justifyContent={"center"} alignItems={"center"} py={10}>
+          <ModalBody justifyContent={"center"} alignItems={"center"} py={10} overflow={"hidden"} position={"relative"}>
+            <Flex flexDirection={"column"} position={"absolute"} style={{ transform: `translateX(${200 - 200 * stage}%)`, transition: "all 500ms ease-in" }}>
+              <Text fontSize={"lg"} fontWeight={"semibold"} px={14} textAlign={"center"}>
+                Присоединяйтесь к телеграм каналу для удобства общения
+              </Text>
+              <TelegramInvite />
+            </Flex>
             <FormProvider {...methods}>
               <form
-                style={{ width: "60%", display: "flex", flexDirection: "column", gap: "2px", justifyContent: "center", maxWidth: "400px", margin: "0 auto" }}
+                style={{
+                  width: "60%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "2px",
+                  justifyContent: "center",
+                  maxWidth: "400px",
+                  margin: "0 auto",
+                  transform: `translateX(-${stage * 200}%)`,
+                  transition: "all 500ms ease-out",
+                }}
                 onSubmit={methods.handleSubmit(onSubmit)}
               >
                 <FormControl display={"flex"} flexDirection={"column"} gap={2}>
@@ -243,7 +270,7 @@ function GuestModal() {
                     />
                   </Flex>
 
-                  <Flex justifyContent={"space-between"} w="100%" gap={2} alignItems={"flex-end"}>
+                  <Flex justifyContent={"space-between"} w="100%" gap={4} alignItems={"flex-end"}>
                     <TextInput
                       id="telegramId"
                       type="text"
@@ -259,30 +286,39 @@ function GuestModal() {
                       }}
                     />
 
-                    <Flex flexDirection={"column"}>
-                      <Text mb={"5px"} lineHeight={"22px"} fontSize="14px">
+                    <Flex alignItems={"center"} justifyContent={"center"} height={"40px"}>
+                      {/* <Text mb={"5px"} lineHeight={"22px"} fontSize="14px">
+                        Дополнительные гости (макс. 2)
+                      </Text> */}
+                      <Checkbox
+                        sx={{
+                          "& .chakra-checkbox__control": {
+                            // bg: "blue.400",
+                            border: `1px solid ${brandColors.deepPink}`,
+                            _checked: {
+                              bg: brandColors.deepPink, // Background color when checked
+                              color: "white",
+                            },
+                          },
+                        }}
+                        width={"80px"}
+                      >
                         Плюс 1
-                      </Text>
-                      <Flex
+                      </Checkbox>
+                      {/* <Flex
                         alignItems={"center"}
-                        // px={10}
-                        gap={5}
+                        justifyContent={"space-between"}
                         h={"40px"}
                         bg="rgba(255,255,255,0.8)"
                         boxShadow="#333 0px 0px 2px"
                         textColor="#333"
-                        // borderWidth="1.5px"
                         borderRadius={"5px"}
-                        // pt="5px"
                         _focus={{
                           bg: "red",
                         }}
                       >
                         <Button
-                          // w={36}
-
                           borderRadius={"5px"}
-                          pt={1}
                           textAlign={"center"}
                           fontSize="1.5rem"
                           textColor={"#333"}
@@ -290,12 +326,8 @@ function GuestModal() {
                         >
                           {"-"}
                         </Button>
-                        <Text textAlign={"center"} w="10px" pt={"5px"}>
-                          {additionalGuests}
-                        </Text>
+                        <Text textAlign={"center"}>{additionalGuests}</Text>
                         <Button
-                          // w={36}
-                          pt={"6px"}
                           borderRadius={"5px"}
                           textAlign={"center"}
                           fontSize="1.5rem"
@@ -304,7 +336,7 @@ function GuestModal() {
                         >
                           {"+"}
                         </Button>
-                      </Flex>
+                      </Flex> */}
                     </Flex>
                   </Flex>
                 </FormControl>{" "}
@@ -313,15 +345,18 @@ function GuestModal() {
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              style={{ backgroundColor: brandColors.deepPink, color: brandColors.black }}
-              mr={3}
-              onClick={methods.handleSubmit(onSubmit)}
-              isLoading={methods.formState.isLoading}
-            >
-              Отправить
-            </Button>
-            <Button variant="ghost" color={brandColors.black} onClick={handleClose}>
+            {stage === 0 && (
+              <Button
+                style={{ backgroundColor: brandColors.deepPink, color: brandColors.black }}
+                mr={3}
+                onClick={methods.handleSubmit(onSubmit)}
+                isLoading={methods.formState.isSubmitting}
+              >
+                Отправить
+              </Button>
+            )}
+
+            <Button variant="ghost" color={brandColors.black} onClick={handleClose} isLoading={methods.formState.isSubmitting}>
               Закрыть
             </Button>
           </ModalFooter>
