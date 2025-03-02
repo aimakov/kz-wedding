@@ -1,14 +1,15 @@
 import React from "react";
-import { Flex, useToast, Image, Text } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { images } from "@/utils/images";
 import { brandColors } from "@/styles/theme";
+import { useToast } from "@/hooks";
 
 type Props = {};
 
 const TelegramInvite = (props: Props) => {
   const router = useRouter();
-  const toast = useToast();
+  const { successToast, errorToast } = useToast();
 
   return (
     <Flex mt="40px" flexDirection={"column"} alignItems={"center"} gap={4}>
@@ -29,12 +30,9 @@ const TelegramInvite = (props: Props) => {
             if (!router.query.tme) throw new Error("Ссылка на телеграм канал отсутствует.");
             router.push(`https://t.me/+${router.query.tme}`);
           } catch (error: any) {
-            toast({
+            errorToast({
               title: "Произошла ошибка!",
               description: error.message,
-              status: "error",
-              duration: 3000,
-              isClosable: true,
             });
           }
         }}

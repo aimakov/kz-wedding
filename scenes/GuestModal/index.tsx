@@ -1,20 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  useDisclosure,
-  FormControl,
-  Flex,
-  Text,
-  useToast,
-  Checkbox,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, Button, useDisclosure, FormControl, Flex, Text, Checkbox } from "@chakra-ui/react";
 import { FormProvider, Controller, useForm, SubmitHandler } from "react-hook-form";
 import { PiHeartLight, PiHeartBreakFill, PiHeartFill } from "react-icons/pi";
 import { useRouter } from "next/router";
@@ -22,14 +7,15 @@ import { useRouter } from "next/router";
 import { supabase } from "@/services/supabase";
 import { brandColors } from "@/styles/theme";
 import { Poiret } from "@/utils/fonts";
-import TextInput from "./Form/TextInput";
-import TelegramInvite from "./TelegramInvite";
+import TextInput from "../../components/Form/TextInput";
+import TelegramInvite from "../../components/TelegramInvite";
+import { useToast } from "@/hooks";
 
 type Inputs = {
   name: string;
   countryCode: string;
   mobile: string;
-  additionalGuests: number;
+  plusOne: boolean;
   telegramId: string;
   weddingId: string;
   coming: boolean;
@@ -40,9 +26,9 @@ function GuestModal() {
   const [stage, setStage] = useState(0);
   const [coming, setComing] = useState<boolean | null>(null);
   const [countryCode, setCountryCode] = useState("+7");
-  const [additionalGuests, setAdditionalGuests] = useState(0);
 
   const router = useRouter();
+  const { successToast, errorToast } = useToast();
 
   const methods = useForm({
     defaultValues: {
@@ -50,7 +36,7 @@ function GuestModal() {
       countryCode: "+7",
       mobile: "",
       telegramId: "",
-      additionalGuests: 0,
+      plusOne: false,
       weddingId: "",
       coming: false,
       notComing: false,
@@ -72,29 +58,23 @@ function GuestModal() {
         name: data.name,
         mobile: data.countryCode + data.mobile,
         telegramId: data.telegramId,
-        additionalGuests: additionalGuests,
+        plusOne: coming && data.plusOne,
         isComing: coming,
       };
       const { error } = await supabase.from("guests").insert(processedData);
       if (error) throw error;
 
-      toast({
+      successToast({
         title: "Ваш ответ записан!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
+        description: "",
       });
 
       if (coming && router.query.tme) setStage(1);
       else handleClose();
     } catch (error: any) {
-      toast({
+      errorToast({
         title: error.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
+        description: "",
       });
     }
   };
@@ -180,6 +160,7 @@ function GuestModal() {
                           cursor={"pointer"}
                           onClick={() => {
                             setComing(false);
+                            methods.setValue("plusOne", false);
                           }}
                         />
                       )}
@@ -228,10 +209,8 @@ function GuestModal() {
                             textColor="#333"
                             textAlign="center"
                             helperText="Код страны"
-                            value={countryCode}
                             onChange={(e) => {
                               field.onChange(e);
-                              if (/^\+[0-9]*$/.test(e.target.value)) setCountryCode(e.target.value);
                             }}
                             validation={{
                               required: {
@@ -270,7 +249,7 @@ function GuestModal() {
                     />
                   </Flex>
 
-                  <Flex justifyContent={"space-between"} w="100%" gap={4} alignItems={"flex-end"}>
+                  <Flex justifyContent={"space-between"} w="100%" gap={4} alignItems={"flex-start"}>
                     <TextInput
                       id="telegramId"
                       type="text"
@@ -286,57 +265,38 @@ function GuestModal() {
                       }}
                     />
 
-                    <Flex alignItems={"center"} justifyContent={"center"} height={"40px"}>
-                      {/* <Text mb={"5px"} lineHeight={"22px"} fontSize="14px">
-                        Дополнительные гости (макс. 2)
-                      </Text> */}
-                      <Checkbox
-                        sx={{
-                          "& .chakra-checkbox__control": {
-                            // bg: "blue.400",
-                            border: `1px solid ${brandColors.deepPink}`,
-                            _checked: {
-                              bg: brandColors.deepPink, // Background color when checked
-                              color: "white",
-                            },
-                          },
+                    <Flex alignItems={"center"} justifyContent={"center"} height={"40px"} mt={"24px"}>
+                      <Controller
+                        name="plusOne"
+                        render={({ field }) => {
+                          return (
+                            <Checkbox
+                              sx={{
+                                "& .chakra-checkbox__control": {
+                                  // bg: "blue.400",
+                                  border: `1px solid ${brandColors.deepPink}`,
+                                  _checked: {
+                                    bg: brandColors.deepPink, // Background color when checked
+                                    border: `1px solid ${brandColors.deepPink}`,
+                                    color: "white",
+                                  },
+                                  _disabled: {
+                                    border: `1px solid ${brandColors.mediumPink}`,
+                                  },
+                                },
+                              }}
+                              isDisabled={coming === false}
+                              width={"80px"}
+                              isChecked={methods.getValues("plusOne")}
+                              onChange={(e) => {
+                                field.onChange(e);
+                              }}
+                            >
+                              Плюс 1
+                            </Checkbox>
+                          );
                         }}
-                        width={"80px"}
-                      >
-                        Плюс 1
-                      </Checkbox>
-                      {/* <Flex
-                        alignItems={"center"}
-                        justifyContent={"space-between"}
-                        h={"40px"}
-                        bg="rgba(255,255,255,0.8)"
-                        boxShadow="#333 0px 0px 2px"
-                        textColor="#333"
-                        borderRadius={"5px"}
-                        _focus={{
-                          bg: "red",
-                        }}
-                      >
-                        <Button
-                          borderRadius={"5px"}
-                          textAlign={"center"}
-                          fontSize="1.5rem"
-                          textColor={"#333"}
-                          onClick={() => setAdditionalGuests((prev) => (prev - 1 > 0 ? prev - 1 : 0))}
-                        >
-                          {"-"}
-                        </Button>
-                        <Text textAlign={"center"}>{additionalGuests}</Text>
-                        <Button
-                          borderRadius={"5px"}
-                          textAlign={"center"}
-                          fontSize="1.5rem"
-                          textColor={"#333"}
-                          onClick={() => setAdditionalGuests((prev) => (prev + 1 < 3 ? prev + 1 : 2))}
-                        >
-                          {"+"}
-                        </Button>
-                      </Flex> */}
+                      />
                     </Flex>
                   </Flex>
                 </FormControl>{" "}

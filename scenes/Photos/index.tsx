@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useTransition, a } from "@react-spring/web";
 
-import FullscreenImageModal from "./FullscreenImageModal";
+import FullscreenImageModal from "../../components/FullscreenImageModal";
 
 interface MasonryItem {
   id: string | number;
@@ -76,12 +76,13 @@ function Masonry({ data }: MasonryProps) {
               onClick={() => {
                 setFullscreenImage(item.image);
               }}
-              className="relative w-full h-full overflow-hidden uppercase text-[10px] leading-[10px] rounded-[4px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] transition duration-300 ease lg:hover:scale-110"
+              className=" relative w-full h-full overflow-hidden uppercase text-[10px] leading-[10px] rounded-[4px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] transition duration-300 ease lg:hover:scale-110 "
               style={{
                 backgroundColor: "#ffffff",
                 backgroundImage: `url(${item.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                cursor: "pointer",
               }}
             />
           </a.div>

@@ -1,4 +1,5 @@
-import { Layout, CountdownTimer, HeroSection, GoogleMap, GuestModal, Hosts, Masonry } from "@/components";
+import { Layout } from "@/components";
+import { CountdownTimer, HeroSection, Map, GuestModal, Hosts, Photos } from "@/scenes";
 import { masonryImages } from "@/utils/images";
 
 export default function Home() {
@@ -8,8 +9,8 @@ export default function Home() {
       <GuestModal />
       <CountdownTimer />
       {/* <Hosts /> */}
-      <Masonry data={masonryImages} />
-      <GoogleMap />
+      <Photos data={masonryImages} />
+      <Map />
     </Layout>
   );
 }

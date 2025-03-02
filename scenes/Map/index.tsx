@@ -1,9 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { IoCopyOutline } from "react-icons/io5";
-import { useToast } from "@chakra-ui/react";
+
+import { useToast } from "@/hooks";
 
 const GoogleMap = () => {
-  const toast = useToast();
+  const { successToast } = useToast();
 
   return (
     <Flex justifyContent="center" alignItems={"center"} gap={6} flexDirection={"column"} py={10}>
@@ -15,11 +16,9 @@ const GoogleMap = () => {
           style={{ scale: "-1 1", marginBottom: "4px", width: "20px" }}
           onClick={() => {
             navigator.clipboard.writeText("г. Атырау, Проспект Абулхайр-хана, 77");
-            toast({
+            successToast({
               title: "Адрес скопирован!",
-              status: "success",
-              duration: 3000,
-              isClosable: true,
+              description: "",
             });
           }}
         />
