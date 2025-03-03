@@ -2,7 +2,7 @@ export const images = {
   flowerCircle: "/images/flowers-circle.png",
   hands: "/images/12.jpg",
   heroSection: "/images/7.jpg",
-  path: "/images/path.png",
+  path: "/images/path2.png",
   telegram: "/images/telegram.png",
   telegramQR: "/images/telegram-qr.jpg",
 

@@ -44,10 +44,6 @@ function GuestModal() {
     mode: "onChange",
   });
 
-  useEffect(() => {
-    console.log(methods.formState);
-  }, [methods.formState]);
-
   const toast = useToast();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
