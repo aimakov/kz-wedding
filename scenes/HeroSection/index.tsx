@@ -41,7 +41,7 @@ const HeroSection = (props: Props) => {
         </Text>
 
         <Text textAlign={"right"} width={"full"} pr={2}>
-          Хэуон
+          Хeуон
         </Text>
         <Flex position={"absolute"} width={"full"} alignItems={"center"} top={-6} left={-2} justifyContent={"center"}>
           <Image src={images.path} width={"80%"} objectFit={"cover"} />
