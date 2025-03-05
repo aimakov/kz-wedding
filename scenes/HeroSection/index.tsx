@@ -8,7 +8,7 @@ import { useToast } from "@/hooks";
 type Props = {};
 
 const HeroSection = (props: Props) => {
-  const [startingTime, setStartinTime] = useState<string>("15:00");
+  const [startingTime, setStartinTime] = useState<string>("xx:00");
 
   const { errorToast } = useToast();
 
@@ -29,25 +29,32 @@ const HeroSection = (props: Props) => {
   }, []);
 
   return (
-    <Flex height={"100dvh"} minH={"900px"} flexDirection={"column"} alignItems={"center"}>
+    <Flex height={"100dvh"} width={"100%"} flexDirection={"column"} alignItems={"center"}>
       <Flex position={"relative"} justifyContent={"center"} alignItems={"center"} my={"100px"} width={"80%"}>
         <Image position={"absolute"} w={"100%"} zIndex={2} src={images.flowerCircle} objectFit={"cover"} objectPosition={"center"} />
         <Image w={"70%"} rounded={"full"} src={images.heroSection} objectFit={"cover"} objectPosition={"center"} boxShadow={"0 0 8px 8px white inset"} />
       </Flex>
 
-      <Flex position={"relative"} flexDirection={"column"} alignItems={"center"} gap={10} fontSize={"4xl"} mb={12} width={"full"} pr={10} pl={12}>
-        <Text textAlign={"left"} width={"full"} transform={"translateY(-10px)"}>
+      <Flex
+        position={"relative"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        height={"175px"}
+        width={"350px"}
+        mx={"auto"}
+        justifyContent={"space-between"}
+        fontSize={"4xl"}
+        mb={12}
+      >
+        <Text textAlign={"left"} width={"full"} transform={"translate(10px,-10px)"}>
           Нурболат
         </Text>
 
         <Text textAlign={"right"} width={"full"} pr={2}>
           Хeуон
         </Text>
-        <Flex position={"absolute"} width={"full"} alignItems={"center"} top={-6} left={-2} justifyContent={"center"}>
-          <Image src={images.path} width={"80%"} objectFit={"cover"} />
-          {/* <Text fontSize={"2xl"} position={"absolute"} left={["52.5%", "53%"]} top={["48%", "50%"]}>
-            и
-          </Text> */}
+        <Flex position={"absolute"} width={"100%"} alignItems={"center"} top={-4} justifyContent={"center"}>
+          <Image src={images.path} height={"175px"} objectFit={"cover"} />
         </Flex>
       </Flex>
 
@@ -66,10 +73,11 @@ const HeroSection = (props: Props) => {
           {startingTime}
         </Text>
       </Flex>
-
-      <Text w="60vw" flexDirection={"column"} textAlign={"center"} fontSize={["1.2rem", "1.6rem"]} textShadow={"#FFF 1px 0 10px"} my="auto">
-        Приглашаем вас на нашу свадьбу!
-      </Text>
+      <Flex flex={1} flexDirection={"column"} justifyContent={"center"}>
+        <Text w="60vw" flexDirection={"column"} textAlign={"center"} fontSize={["1.2rem", "1.6rem"]} textShadow={"#FFF 1px 0 10px"}>
+          Приглашаем вас на нашу свадьбу!
+        </Text>
+      </Flex>
     </Flex>
   );
 };
