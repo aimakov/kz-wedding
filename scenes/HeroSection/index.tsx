@@ -29,33 +29,14 @@ const HeroSection = (props: Props) => {
   }, []);
 
   return (
-    <Flex height={"100dvh"} width={"100%"} flexDirection={"column"} alignItems={"center"}>
-      <Flex position={"relative"} justifyContent={"center"} alignItems={"center"} my={"100px"} width={"80%"}>
-        <Image position={"absolute"} w={"100%"} zIndex={2} src={images.flowerCircle} objectFit={"cover"} objectPosition={"center"} />
-        <Image w={"70%"} rounded={"full"} src={images.heroSection} objectFit={"cover"} objectPosition={"center"} boxShadow={"0 0 8px 8px white inset"} />
+    <Flex height={"100dvh"} width={"100%"} flexDirection={"column"} alignItems={"center"} justifyContent={"space-evenly"}>
+      <Flex position={"relative"} h={"40%"} justifyContent={"center"} alignItems={"center"} width={"100%"}>
+        <Image position={"absolute"} h={"110%"} zIndex={2} src={images.flowerCircle} objectFit={"cover"} objectPosition={"center"} />
+        <Image h={"80%"} rounded={"full"} src={images.heroSection} objectFit={"cover"} objectPosition={"center"} boxShadow={"0 0 8px 8px white inset"} />
       </Flex>
 
-      <Flex
-        position={"relative"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        height={"175px"}
-        width={"350px"}
-        mx={"auto"}
-        justifyContent={"space-between"}
-        fontSize={"4xl"}
-        mb={12}
-      >
-        <Text textAlign={"left"} width={"full"} transform={"translate(10px,-10px)"}>
-          Нурболат
-        </Text>
-
-        <Text textAlign={"right"} width={"full"} pr={2}>
-          Хeуон
-        </Text>
-        <Flex position={"absolute"} width={"100%"} alignItems={"center"} top={-4} justifyContent={"center"}>
-          <Image src={images.path} height={"175px"} objectFit={"cover"} />
-        </Flex>
+      <Flex position={"relative"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} height={"150px"} width={"80%"} fontSize={"4xl"}>
+        <Image src={images.path} width={"85%"} objectFit={"cover"} />
       </Flex>
 
       <Flex alignItems={"center"} gap={["20px", "40px"]} fontSize={["1.2rem", "1.6rem"]}>
@@ -73,7 +54,7 @@ const HeroSection = (props: Props) => {
           {startingTime}
         </Text>
       </Flex>
-      <Flex flex={1} flexDirection={"column"} justifyContent={"center"}>
+      <Flex flexDirection={"column"} justifyContent={"center"}>
         <Text w="60vw" flexDirection={"column"} textAlign={"center"} fontSize={["1.2rem", "1.6rem"]} textShadow={"#FFF 1px 0 10px"}>
           Приглашаем вас на нашу свадьбу!
         </Text>
